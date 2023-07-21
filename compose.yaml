@@ -1,0 +1,65 @@
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  sso-db:
+    image: postgres:latest
+    container_name: sso-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+    networks:
+      - app-network
+
+  keycloak:
+    depends_on:
+      - sso-db
+    container_name: keycloak
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_DATABASE: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASS}
+    image: jboss/keycloak:${KEYCLOAK_VERSION}
+    ports:
+      - "28080:8080"
+    #restart: unless-stopped
+    networks:
+      - app-network
+
+  app-db:
+    image: 'mysql:latest'
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_PASSWORD: ${MYSQL_PASSWD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWD}
+      MYSQL_USER: ${MYSQL_USR}
+    ports:
+      - '3306'
+    volumes:
+      - ~/DevApps/mysql:/var/lib/mysql
+    networks:
+      - app-network
+
+
+
+  redis:
+    build:
+      context: .
+      dockerfile: Dockerfile-redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis_entrypoint.sh:/usr/local/bin/redis_entrypoint.sh
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./logs/:/var/log/redis/
+    entrypoint: ["/bin/sh", "/usr/local/bin/redis_entrypoint.sh"]
+    command: redis-server /usr/local/etc/redis/redis.conf --loglevel verbose
+    networks:
+      - app-network
+

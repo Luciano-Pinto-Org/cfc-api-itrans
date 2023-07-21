@@ -1,0 +1,23 @@
+8:C 29 Jun 2023 17:44:37.801 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+8:C 29 Jun 2023 17:44:37.801 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=8, just started
+8:C 29 Jun 2023 17:44:37.801 # Configuration loaded
+8:C 29 Jun 2023 17:45:17.502 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+8:C 29 Jun 2023 17:45:17.502 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=8, just started
+8:C 29 Jun 2023 17:45:17.503 # Configuration loaded
+8:C 29 Jun 2023 17:55:15.433 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+8:C 29 Jun 2023 17:55:15.433 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=8, just started
+8:C 29 Jun 2023 17:55:15.433 # Configuration loaded
+8:C 29 Jun 2023 18:02:49.861 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+8:C 29 Jun 2023 18:02:49.861 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=8, just started
+8:C 29 Jun 2023 18:02:49.861 # Configuration loaded
+8:C 29 Jun 2023 18:59:38.217 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+8:C 29 Jun 2023 18:59:38.217 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=8, just started
+8:C 29 Jun 2023 18:59:38.217 # Configuration loaded
+8:M 29 Jun 2023 18:59:38.219 * monotonic clock: POSIX clock_gettime
+7:C 29 Jun 2023 20:25:06.261 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+8:C 29 Jun 2023 20:29:56.625 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+8:C 29 Jun 2023 20:29:56.625 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=8, just started
+8:C 29 Jun 2023 20:29:56.625 # Configuration loaded
+8:C 04 Jul 2023 20:31:50.503 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+8:C 04 Jul 2023 20:31:50.503 # Redis version=7.0.11, bits=64, commit=00000000, modified=0, pid=8, just started
+8:C 04 Jul 2023 20:31:50.503 # Configuration loaded
