@@ -1,0 +1,53 @@
+variables:
+  MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=.m2/repository -Djava.awt.headless=true"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+
+stages:
+  - package
+  - deploy
+ 
+cache:
+  paths:
+    - .m2/repository
+ 
+package:
+  image: maven:3.9.3-eclipse-temurim-17
+  stage: package
+  tags:
+    - java
+  only:
+    - stage
+    - tags
+  artifacts:
+    paths:
+      - target/*.jar
+      - Dockerfile
+  script:
+    - mvn $MAVEN_CLI_OPTS package -DskipTests
+    - echo "Packaging .jar"
+
+.deploy_definition: &deploy_definition
+  stage: deploy
+  image: silasjr/ubuntu-smbclient
+  dependencies:
+    - package
+  script:
+    - sshpass -p "$USER_PASSWORD" ssh -o StrictHostKeyChecking=no "$USER_HOST" "[ -d ~/$CI_PROJECT_NAME ]  || mkdir ~/$CI_PROJECT_NAME"
+    - sshpass -p "$USER_PASSWORD" scp -o StrictHostKeyChecking=no Dockerfile target/*.jar "$USER_HOST:~/$CI_PROJECT_NAME"
+    - sshpass -p "$USER_PASSWORD" ssh -o StrictHostKeyChecking=no "$USER_HOST" "cd ~/$CI_PROJECT_NAME && docker build --build-arg JAR_FILE=$CI_PROJECT_NAME.jar -t registry.prodam.am.gov.br/$CI_PROJECT_PATH:latest ."
+    - sshpass -p "$USER_PASSWORD" ssh -o StrictHostKeyChecking=no "$USER_HOST" "docker service ls | grep $CI_PROJECT_NAME && docker service update --force $CI_PROJECT_NAME || docker service create --name $CI_PROJECT_NAME -p $API_PORT:8080 --env SPRING_PROFILES_ACTIVE=$CI_ENVIRONMENT_NAME registry.prodam.am.gov.br/$CI_PROJECT_PATH:latest"
+    - echo "docker service successfully deployed on $CI_ENVIRONMENT_NAME"
+    
+deploy-staging:
+  only:
+    - stage
+  environment:
+    name: staging
+  <<: *deploy_definition
+    
+deploy-production:
+  only:
+    - tags
+  environment:
+    name: production
+  <<: *deploy_definition
